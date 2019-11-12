@@ -1,4 +1,7 @@
 package lt.bit.pizzeria;
 
-public interface Food {
+public abstract class Food extends MenuItem {
+    public Food(String name, String type, double price) {
+        super(name, type, price);
+    }
 }
