@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 public class PizzeriaMain {
     private static final String PATH = "/home/keizah/java/java-pizzeria/txt/";
     private static List<MenuItem> menuItems;
-    private static boolean space = true, welcome = true;
-    private static String answer;
+    private static boolean space = true, welcome = true, review = true;
+    private static Scanner c;
 
     public static void main(String[] args) {
         addMenuItemsToList();
@@ -24,13 +24,14 @@ public class PizzeriaMain {
 
     private static void welcome() {
         System.out.println("Sveiki atvykę į Mūsų restoraną, prašome, sėstis čia.\nAr atnešti Jums meniu? (t / n)");
-        Scanner c = new Scanner(System.in);
+        c = new Scanner(System.in);
 
         do {
-            answer = c.nextLine();
+            String answer = c.nextLine();
 
             if(answer.equals("t")){
                 printMenu();
+                review();
                 break;
             } else if(answer.equals("n")) break;
             else System.out.println("t(taip) arba n(ne)");
@@ -39,8 +40,21 @@ public class PizzeriaMain {
         System.out.println("Viso gero!");
     }
 
+    private static void review() {
+        System.out.println("Peržiūrėkite meniu. (i(išeiti) / u(užsisakyti)");
+
+        do {
+            String answer = c.next();
+            if(answer.equals("u")) {
+                System.out.println("uzsisakyti");
+            } else if(answer.equals("i")) break;
+            else System.out.println("(i(išeiti) / u(užsisakyti)");
+        } while (review);
+    }
+
     private static void printMenu(){
         System.out.print(Color.RED_BG +""+ Color.BBLACK+"\n\tSaulėtekio Pizzeria & Wok\n\t"+Color.WHITE+"Restorano meniu:\n\n"+Color.RESET);
+
         try {
             int i               = 0;
             File myObj          = new File(PATH + "menu.txt");
@@ -71,12 +85,12 @@ public class PizzeriaMain {
                             space = true;
                         }
                     } else if (data.length > 1){
+                        int spaces = 150;
                         i++;
 
                         System.out.println(Color.BLACK_BG+""+Color.RED);
                         System.out.print("\t"+ (i < 10 ? " " : "") + i + ". " +Color.WHITE + data[1] + ".".repeat(
-                                (data.length > 2) ? 150 - line.length() - 2 + (data.length > 3 ? 2 : 0):
-                                        150 - line.length()
+                                (data.length > 2) ? spaces - line.length() - 2 + (data.length > 3 ? 2 : 0) : spaces - line.length()
                         ) + " " + (data.length > 2 && !data[2].equals("+") ? data[2]+" / " : "") + data[0] +" €");
 
                         if(data.length == 3) {
