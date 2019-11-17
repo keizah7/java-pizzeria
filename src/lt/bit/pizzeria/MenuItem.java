@@ -10,4 +10,13 @@ abstract class MenuItem {
         this.type = type;
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "MenuItem{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

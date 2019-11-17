@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 public class PizzeriaMain {
     private static final String PATH = "/home/keizah/java/java-pizzeria/txt/";
     private static List<MenuItem> menuItems;
-    private static boolean space = true, welcome = true, review = true;
+    private static List<MenuItem> orderedItems = new LinkedList<>();
+    private static boolean space = true, welcome = true, review = true, ordering = true;
     private static Scanner c;
 
     public static void main(String[] args) {
@@ -46,10 +47,41 @@ public class PizzeriaMain {
         do {
             String answer = c.next();
             if(answer.equals("u")) {
-                System.out.println("uzsisakyti");
+                ordering();
+                break;
             } else if(answer.equals("i")) break;
             else System.out.println("(i(išeiti) / u(užsisakyti)");
         } while (review);
+    }
+
+    private static void ordering(){
+        String text = "Rinkitės: int(enter) / (.(išsirinkau) / i(išeiti)) / m(pažiūrėti į meniu)";
+        System.out.print(text);
+
+        do {
+            String answer = c.next();
+
+            if(answer.equals("i")) break;
+            else if(answer.equals("m")) {
+                printMenu();
+
+                System.out.print(text);
+            } else if(answer.equals(".")) {
+//                System.out.print("Galutinė suma yra:");
+                System.out.println(orderedItems.toString());
+                break;
+            } else if(answer.matches("\\d+")) {
+                int answerInt = Integer.parseInt(answer);
+                if(answerInt <= menuItems.size() & answerInt > 0) {
+                    int uzs = Integer.parseInt(answer);
+                    orderedItems.add(menuItems.get(uzs-1));
+                } else System.out.println("Tokio produkto meniu sąraše nėra");
+            } else {
+                System.out.println("int(enter) / (.(išsirinkau) / i(išeiti)) / m(pažiūrėti į meniu)");
+                System.out.println(answer);
+                ordering = true;
+            }
+        } while (ordering);
     }
 
     private static void printMenu(){
