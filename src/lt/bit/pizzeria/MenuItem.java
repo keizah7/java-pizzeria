@@ -54,8 +54,5 @@ abstract class MenuItem implements Comparable<MenuItem> {
     @Override
     public int compareTo(MenuItem menuItem) {
         return Double.compare(this.getPrice(), menuItem.getPrice());
-//        if (this.getPrice() < menuItem.getPrice()) return -1;
-//        if (this.getPrice() > menuItem.getPrice()) return 1;
-//        return 0;
     }
 }

@@ -1,6 +1,7 @@
 package lt.bit.pizzeria;
 
 import lt.bit.pizzeria.items.*;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,7 +19,6 @@ public class PizzeriaMain {
 
     public static void main(String[] args) {
         createItemsFromMenu();
-
         welcome();
     }
 
@@ -44,33 +44,33 @@ public class PizzeriaMain {
 
         do {
             String answer = c.next();
-            if(answer.equals("u")) {
+            if (answer.equals("u")) {
                 ordering();
                 break;
-            } else if(answer.equals("i")) break;
+            } else if (answer.equals("i")) break;
             else System.out.println("(i(išeiti) / u(užsisakyti)");
         } while (review);
     }
 
-    private static void ordering(){
+    private static void ordering() {
         String text = "Rinkitės: int(enter) / (.(išsirinkau) / i(išeiti)) / m(pažiūrėti į meniu)";
         System.out.print(text);
 
         do {
             String answer = c.next();
 
-            if(answer.equals("i")) break;
-            else if(answer.equals("m")) {
+            if (answer.equals("i")) break;
+            else if (answer.equals("m")) {
                 printMenu();
 
                 System.out.print(text);
-            } else if(answer.equals(".")) {
+            } else if (answer.equals(".")) {
 //                System.out.print("Galutinė suma yra:");
 //                System.out.println(orderedItems.toString());
                 break;
-            } else if(answer.matches("\\d+")) {
+            } else if (answer.matches("\\d+")) {
                 int answerInt = Integer.parseInt(answer);
-                if(answerInt <= menuItems.size() & answerInt > 0) {
+                if (answerInt <= menuItems.size() & answerInt > 0) {
                     int uzs = Integer.parseInt(answer);
 //                    orderedItems.add(menuItems.get(uzs-1));
                 } else System.out.println("Tokio produkto meniu sąraše nėra");
@@ -83,55 +83,73 @@ public class PizzeriaMain {
     }
 
     private static void printMenu() {
-        System.out.print(Color.RED_BG + "" + Color.BBLACK + "\n\tSaulėtekio Pizzeria & Wok\n\t" + Color.WHITE + "Restorano meniu:\n\n" + Color.RESET);
-        category = "";
+        printMenuHeader();
+        menuItems.forEach(PizzeriaMain::printItems);
+        printMenuFooter();
+    }
 
-        menuItems.forEach((key, value) -> {
-            for (Object o : value) {
-                final int dots = 200;
-                MenuItem s = (MenuItem) o;
-
-                if (!category.equals(key)) {
-                    if (i != 0) System.out.println();
-                    category = key;
-                    System.out.print(Color.GREEN_BG + "\t" + Color.BLACK);
-                    System.out.println(category);
-                }
-
-                System.out.println(Color.BLACK_BG);
-                System.out.print("\t" + Color.RED + (++i < 10 ? " " + i : i) + ". " + Color.WHITE);
-                System.out.print(s.getType() + " ");
-
-                System.out.print(".".repeat(
-                        dots - s.getType().length() - ((s.getCapacity() != null) ? (!s.getCapacity().endsWith(")") ? s.getCapacity().length() + 3 : 0) : 0)
-                ) + " ");
-
-                if (s.getCapacity() != null)
-                    if (!s.getCapacity().endsWith(")")) System.out.print(s.getCapacity() + " / ");
-
-                System.out.println(String.format("%s €", s.getPrice()));
-                if (s.getInfo() != null) if (s.getInfo().endsWith(")")) System.out.println("\t\t" + s.getInfo());
-            }
-        });
+    private static void printMenuFooter() {
         System.out.println("\n" + Color.RED_BG + "" + Color.BBLACK + "\n\t" + "\u00a9 Artūras M.\n");
         System.out.println(Color.RESET);
+    }
+
+    private static void printMenuHeader() {
+        category = "";
+        System.out.print(Color.RED_BG + "" + Color.BBLACK + "\n\tSaulėtekio Pizzeria & Wok\n\t" + Color.WHITE + "Restorano meniu:\n\n" + Color.RESET);
+    }
+
+    private static void printItem(String key, MenuItem o) {
+        MenuItem item = o;
+
+        printItemTitle(key);
+        printItemName(item);
+        printDots(item);
+        printItemInfo(item);
+    }
+
+    private static void printItemInfo(MenuItem item) {
+        if (item.getCapacity() != null)
+            if (!item.getCapacity().endsWith(")")) System.out.print(item.getCapacity() + " / ");
+        System.out.println(String.format("%s €", item.getPrice()));
+        if (item.getInfo() != null) if (item.getInfo().endsWith(")")) System.out.println("\t\t" + item.getInfo());
+    }
+
+    private static void printItemName(MenuItem item) {
+        System.out.println(Color.BLACK_BG);
+        System.out.print("\t" + Color.RED + (++i < 10 ? " " + i : i) + ". " + Color.WHITE);
+        System.out.print(item.getType() + " ");
+    }
+
+    private static void printItemTitle(String key) {
+        if (!category.equals(key)) {
+            if (i != 0) System.out.println();
+            category = key;
+            System.out.print(Color.GREEN_BG + "\t" + Color.BLACK);
+            System.out.println(category);
+        }
+    }
+
+    private static void printDots(MenuItem s) {
+        final int dots = 200;
+
+        System.out.print(".".repeat(dots - s.getType().length() - ((s.getCapacity() != null) ? (!s.getCapacity().endsWith(")") ? s.getCapacity().length() + 3 : 0) : 0)) + " ");
     }
 
     private static void createItemsFromMenu() {
         try {
             Files.readAllLines(Paths.get(PATH))
-            .stream()
-            .map(s -> s.split("\n"))
-            .forEach(
-                strings -> {
-                    String[] arr = strings[0].split(Pattern.quote("|"));
-                    if (!category.equals(arr[0])) {
-                        category = arr[0];
-                        items = new LinkedList<>();
-                    }
-                    menuItems.put(category, addMenuItemsToList(arr));
-                }
-            );
+                    .stream()
+                    .map(s -> s.split("\n"))
+                    .forEach(
+                            strings -> {
+                                String[] arr = strings[0].split(Pattern.quote("|"));
+                                if (!category.equals(arr[0])) {
+                                    category = arr[0];
+                                    items = new LinkedList<>();
+                                }
+                                menuItems.put(category, addMenuItemsToList(arr));
+                            }
+                    );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -152,6 +170,10 @@ public class PizzeriaMain {
         String info = arr.length > 3 ? arr[3] : "";
         String capacity = arr.length > 4 ? arr[4] : "";
 
+        return returnMenuItem(item, p, t, info, capacity);
+    }
+
+    private static MenuItem returnMenuItem(String item, double p, String t, String info, String capacity) {
         switch (item) {
             case "Wok":
                 return new Wok(t, p, info);
@@ -168,5 +190,9 @@ public class PizzeriaMain {
             default:
                 return null;
         }
+    }
+
+    private static void printItems(String key, List value) {
+        for (Object o : value) printItem(key, (MenuItem) o);
     }
 }
