@@ -6,7 +6,7 @@ Pica|7.9|Egzotiška|(kvietinių miltų pagrindas, pomidorų padažas, fermentini
 Pica|5.8|Gardžioji|(Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, karštai rūkyta kiaulienos šoninė, virtas jautienos kumpis, svogūnai, augalinis aliejus su česnaku)
 Pica|7.9|Firminė su vištiena|(Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, kiaulienos kumpis, virtas jautienos kumpis, pievagrybiai, augalinis aliejus su česnaku)
 Pica|8|Aitriųjų paprikų|(Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, pievagrybiai, saliamis, aitriosios paprikos, augalinis aliejus su česnaku)
-Pica|9|Akapulko|(vietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, pievagrybiai, virtas jautienos kumpis, Chalapos paprikos, aštrus padažas, augalinis aliejus su česnaku)
+Pica|9|Akapulko|(Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, pievagrybiai, virtas jautienos kumpis, Chalapos paprikos, aštrus padažas, augalinis aliejus su česnaku)
 Pica|8|Aštrioji|Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, forminis kiaulienos kumpis, saliamis, Chalapos paprikos, džiovintos aštriosios paprikos, aštrus padažas, augalinis aliejus su česnaku)
 Alus|2.5|Volfas Engelman Rinktinis|Pinta|(pilstomas lageris)
 Alus|2.5|Volfas Engelman Baltas|Pinta|(kvietinis)
@@ -20,9 +20,9 @@ Gaivusis gėrimas|0.3|Stalo vanduo|250ml
 Gaivusis gėrimas|1.5|Mineralinis vanduo „Neptūnas“|300ml
 Gaivusis gėrimas|2|Gira|500ml
 Gaivusis gėrimas|1.2|Sultys|250ml|(apelsinų, obuolių, ananasų, multivitaminų, vynuogių, pomidorų)
-Arbata|1.2|Žalioji
 Arbata|1.5|Juodoji
 Arbata|2|Šaltalankių
+Arbata|1.2|Žalioji
 Kava|1.9|Esspreso
 Kava|1.1|Juoda
 Kava|1.5|Juoda su pienu
