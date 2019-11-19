@@ -5,16 +5,22 @@ import lt.bit.pizzeria.items.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class PizzeriaMain {
     private static final String PATH = "/home/keizah/java/java-pizzeria/txt/menu.txt";
-    private static boolean welcome = true, space = true, ordering = true, review = true;
+    private static boolean space = true;
+    private static boolean ordering = true;
     private static Map<String, List> menuItems = new TreeMap<>(Collections.reverseOrder());
     private static List<MenuItem> items = new LinkedList<>();
+    private static List<MenuItem> allItems = new LinkedList<>();
+    private static Map<Integer, Integer> ordered = new TreeMap<>();
     private static String category = "";
     private static int i = 0;
+    private static double price = 0;
     private static Scanner c = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -25,23 +31,26 @@ public class PizzeriaMain {
     private static void welcome() {
         System.out.println("Sveiki atvykę į Mūsų restoraną, prašome, sėstis čia.\nAr atnešti Jums meniu? (t / n)");
 
+        boolean welcome = true;
         do {
             String answer = c.nextLine();
 
             if (answer.equals("t")) {
                 printMenu();
+
                 review();
                 break;
             } else if (answer.equals("n")) break;
             else System.out.println("t(taip) arba n(ne)");
         } while (welcome);
 
-        System.out.println("Viso gero!");
+        System.out.println("\n\tViso gero!");
     }
 
     private static void review() {
         System.out.println("Peržiūrėkite meniu. (i(išeiti) / u(užsisakyti)");
 
+        boolean review = true;
         do {
             String answer = c.next();
             if (answer.equals("u")) {
@@ -53,8 +62,10 @@ public class PizzeriaMain {
     }
 
     private static void ordering() {
-        String text = "Rinkitės: int(enter) / (.(išsirinkau) / i(išeiti)) / m(pažiūrėti į meniu)";
+        String text = "Rinkitės: (int / int ...int) / (.(išsirinkau) / i(išeiti)) / m(pažiūrėti į meniu) ";
         System.out.print(text);
+        int lastInt = 0;
+        ordered = new TreeMap<>();
 
         do {
             String answer = c.next();
@@ -65,21 +76,87 @@ public class PizzeriaMain {
 
                 System.out.print(text);
             } else if (answer.equals(".")) {
-//                System.out.print("Galutinė suma yra:");
-//                System.out.println(orderedItems.toString());
+                finishOrdering(false);
                 break;
             } else if (answer.matches("\\d+")) {
                 int answerInt = Integer.parseInt(answer);
-                if (answerInt <= menuItems.size() & answerInt > 0) {
-                    int uzs = Integer.parseInt(answer);
-//                    orderedItems.add(menuItems.get(uzs-1));
-                } else System.out.println("Tokio produkto meniu sąraše nėra");
+                if (answerInt <= allItems.size() & answerInt > 0) {
+                    int uzs = answerInt - 1;
+
+                    Integer count = ordered.get(uzs);
+
+                    System.out.print(Color.BBLACK);
+                    if (count == null) {
+                        System.out.print(allItems.get(uzs).getType() + ", ");
+                        if(ordered.size() % 5 == 0) System.out.println();
+                        ordered.put(uzs, 1);
+                    } else {
+                        ordered.put(uzs, ++count);
+                        if (lastInt == uzs) System.out.print("->" + count + "vnt. ");
+                        else System.out.print(allItems.get(uzs).getType() + " (" + count + "vnt.), ");
+                    }
+                    System.out.print(Color.RESET);
+                } else System.out.print("\n" + Color.RED + answerInt + " - produkto meniu sąraše nėra!" + Color.BBLACK + " ");
+                lastInt = answerInt - 1;
             } else {
                 System.out.println("int(enter) / (.(išsirinkau) / i(išeiti)) / m(pažiūrėti į meniu)");
-                System.out.println(answer);
                 ordering = true;
             }
         } while (ordering);
+    }
+
+    private static void finishOrdering(boolean finished) {
+        LocalDateTime ldt = LocalDateTime.now();
+        System.out.print(
+                "\n\n"
+                + (finished ? Color.GREEN_BG : Color.YELLOW_BG)
+                + "\n\t"
+                + (finished ? "Sąskaita faktūra (" + ldt.format(DateTimeFormatter.ofPattern("YYYY.MM.dd HH:mm")) + ")" : "Jūsų pasirinkti produktai:")
+                + "\n\n" + Color.RESET
+        );
+        price = 0;
+
+        System.out.println();
+
+        ordered.forEach((integer, count) ->
+        {
+            MenuItem item = allItems.get(integer);
+            price += (double) (count * item.getPrice());
+            final String dots = ".".repeat(70 - item.getType().length() - (count > 1 ? count.toString().length() + 7 : 0));
+            System.out.printf("\t%s%s %s %5.2f €%n", item.getType(), count > 1 ? " (" + count + "vnt.)" : "", dots, count * item.getPrice());
+        });
+        if (finished) {
+            System.out.printf("\n\t%sViso: %.2f €%s%n", Color.UBLACK, price, Color.RESET);
+            int randomMinutes = (int) (Math.random() * 10 + 1);
+            int cookingTime = randomMinutes * ordered.size();
+            int hh = cookingTime / 60; //since both are ints, you get an int
+            int mm = cookingTime - hh * 60;
+            System.out.print("\n\tUžsakymas bus paruoštas už ");
+            System.out.printf("%s %s", (hh > 0 ? hh+"h " : ""), (mm > 0 ? mm+"min." : ""));
+            System.out.println(" (" + ldt.plusMinutes(cookingTime).format(DateTimeFormatter.ofPattern("HH:mm")) + ")");
+            System.out.println("\n\tSKANAUS :)");
+        }
+
+        if (!finished) finalDecision();
+    }
+
+    private static void finalDecision() {
+        String text = Color.UBLACK + "\nRinkitės:" + Color.RESET + " k(" + Color.GREEN + "PATVIRTINU" + Color.RESET + ") / u(" + Color.BLUE + "Užsisakyti iš naujo" + Color.RESET + ") / i(" + Color.RED + "išeiti" + Color.RESET + ") ";
+        System.out.print(text);
+
+        boolean decision = true;
+        do {
+            String answer = c.next();
+            if (answer.equals("k")) {
+                finishOrdering(true);
+                break;
+            } else if (answer.equals("i")) break;
+            else if (answer.equals("u")) {
+                System.out.println("\n\n\tRinkis iš naujo.........");
+                ordering();
+                break;
+            } else System.out.println(text);
+        } while (decision);
     }
 
     private static void printMenu() {
@@ -95,11 +172,12 @@ public class PizzeriaMain {
 
     private static void printMenuHeader() {
         category = "";
+        i = 0;
         System.out.print(Color.RED_BG + "" + Color.BBLACK + "\n\tSaulėtekio Pizzeria & Wok\n\t" + Color.WHITE + "Restorano meniu:\n\n" + Color.RESET);
     }
 
-    private static void printItem(String key, MenuItem o) {
-        MenuItem item = o;
+    private static void printItem(String key, MenuItem item) {
+        allItems.add(item);
 
         printItemTitle(key);
         printItemName(item);
@@ -110,7 +188,7 @@ public class PizzeriaMain {
     private static void printItemInfo(MenuItem item) {
         if (item.getCapacity() != null)
             if (!item.getCapacity().endsWith(")")) System.out.print(item.getCapacity() + " / ");
-        System.out.println(String.format("%s €", item.getPrice()));
+        System.out.println(String.format("%4.2f €", item.getPrice()));
         if (item.getInfo() != null) if (item.getInfo().endsWith(")")) System.out.println("\t\t" + item.getInfo());
     }
 
