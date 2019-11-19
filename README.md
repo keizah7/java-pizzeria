@@ -25,8 +25,7 @@ Techninė dalis
 --------------
 - PizzeriaMain - veiksmo vieta
 - MenuItem - interfeisas arba abstrakti klasė maistui
-- Drink - interfeisas arba abstrakti klasė gėrimams (galimos implementacijos: Beer, Water (still, sparkling), SoftDrink, 
-- Tea (sugar, honey), Coffee (sugar, milk) ir t.t.)
+- Drink - interfeisas arba abstrakti klasė gėrimams (galimos implementacijos: Beer, Water (still, sparkling), SoftDrink, Tea (sugar, honey), Coffee (sugar, milk) ir t.t.)
 - Food - interfeisas maistui (galimos implementacijos: Pizza, Wrap, Tortilla ir t.t.)
 - Sauce - enumas
 

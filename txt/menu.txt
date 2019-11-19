@@ -1,0 +1,30 @@
+Wok|4.9|Ryžių makaronai su vištiena|(morkos, paprika, juodieji kiniški grybai, pievagrybiai, pekino padažas, sezamas)
+Wok|5.9|Kiaušininiai makaronai su kiauliena|(juodieji kiniški grybai, morkos, paprika, cukinija, pekino kopūstas, pekino padažas, sezamas)
+Wok|6.5|Kiaušininiai makaronai su krevetėmis|(krevetės, šparaginės pupelės, pievagrybiai, morkos, paprika, teriyaki padažas, sezamas)
+Wok|5.5|Ryžiai su krevetėmis|(krevetės, brokoliai, juodieji kiniški grybai, moros, cukinija, austrių padažas, sezamas)
+Pica|7.9|Egzotiška|(kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, kiaulienos kumpis, konservuoti ananasai, augalinis aliejus su česnaku)
+Pica|5.8|Gardžioji|(Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, karštai rūkyta kiaulienos šoninė, virtas jautienos kumpis, svogūnai, augalinis aliejus su česnaku)
+Pica|7.9|Firminė su vištiena|(Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, kiaulienos kumpis, virtas jautienos kumpis, pievagrybiai, augalinis aliejus su česnaku)
+Pica|8|Aitriųjų paprikų|(Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, pievagrybiai, saliamis, aitriosios paprikos, augalinis aliejus su česnaku)
+Pica|9|Akapulko|(Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, pievagrybiai, virtas jautienos kumpis, Chalapos paprikos, aštrus padažas, augalinis aliejus su česnaku)
+Pica|8|Aštrioji|Kvietinių miltų pagrindas, pomidorų padažas, fermentinis sūris, forminis kiaulienos kumpis, saliamis, Chalapos paprikos, džiovintos aštriosios paprikos, aštrus padažas, augalinis aliejus su česnaku)
+Alus|2.5|Volfas Engelman Rinktinis|Pinta|(pilstomas lageris)
+Alus|2.5|Volfas Engelman Baltas|Pinta|(kvietinis)
+Alus|2.5|APA|Pinta|(australian pale ale)
+Alus|2.5|Kriek|Pinta|(belgiško tipo vyšnių kriek)
+Alus|2.5|Carlsberg|500ml
+Alus|2.5|Saporo Japoniškas|330ml
+Alus|2.5|Švyturio baltas|500ml
+Alus|2.5|Švyturio nealkoholinis|500ml
+Gaivusis gėrimas|0.3|Stalo vanduo|250ml
+Gaivusis gėrimas|1.5|Mineralinis vanduo „Neptūnas“|300ml
+Gaivusis gėrimas|2|Gira|500ml
+Gaivusis gėrimas|1.2|Sultys|250ml|(apelsinų, obuolių, ananasų, multivitaminų, vynuogių, pomidorų)
+Arbata|1.5|Juodoji
+Arbata|2|Šaltalankių
+Arbata|1.2|Žalioji
+Kava|1.9|Esspreso
+Kava|1.1|Juoda
+Kava|1.5|Juoda su pienu
+Kava|1.6|Latte
+Kava|1.8|Cappuccino
