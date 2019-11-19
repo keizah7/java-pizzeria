@@ -17,7 +17,7 @@ public class PizzeriaMain {
     private static Map<String, List> menuItems = new TreeMap<>(Collections.reverseOrder());
     private static List<MenuItem> items = new LinkedList<>();
     private static List<MenuItem> allItems = new LinkedList<>();
-    private static Map<Integer, Integer> ordered = new TreeMap<>();
+    private static Map<MenuItem, Integer> ordered = new TreeMap<>();
     private static String category = "";
     private static int i = 0;
     private static double price = 0;
@@ -40,7 +40,7 @@ public class PizzeriaMain {
 
                 review();
                 break;
-            } else if (answer.equals("n")) break;
+            } else if (answer.equals("n")) welcome = false;
             else System.out.println("t(taip) arba n(ne)");
         } while (welcome);
 
@@ -56,7 +56,7 @@ public class PizzeriaMain {
             if (answer.equals("u")) {
                 ordering();
                 break;
-            } else if (answer.equals("i")) break;
+            } else if (answer.equals("i")) review = false;
             else System.out.println("(i(išeiti) / u(užsisakyti)");
         } while (review);
     }
@@ -83,20 +83,22 @@ public class PizzeriaMain {
                 if (answerInt <= allItems.size() & answerInt > 0) {
                     int uzs = answerInt - 1;
 
-                    Integer count = ordered.get(uzs);
+                    MenuItem item = allItems.get(uzs);
 
                     System.out.print(Color.BBLACK);
-                    if (count == null) {
-                        System.out.print(allItems.get(uzs).getType() + ", ");
-                        if(ordered.size() % 5 == 0) System.out.println();
-                        ordered.put(uzs, 1);
-                    } else {
-                        ordered.put(uzs, ++count);
+                    if (ordered.containsKey(item)) {
+                        Integer count = ordered.get(item);
+                        ordered.put(item, ++count);
                         if (lastInt == uzs) System.out.print("->" + count + "vnt. ");
-                        else System.out.print(allItems.get(uzs).getType() + " (" + count + "vnt.), ");
+                        else System.out.print(item.getType() + " (" + count + "vnt.), ");
+                    } else {
+                        System.out.print(item.getType() + ", ");
+                        if (ordered.size() % 5 == 0) System.out.println();
+                        ordered.put(item, 1);
                     }
                     System.out.print(Color.RESET);
-                } else System.out.print("\n" + Color.RED + answerInt + " - produkto meniu sąraše nėra!" + Color.BBLACK + " ");
+                } else
+                    System.out.print("\n" + Color.RED + answerInt + " - produkto meniu sąraše nėra!" + Color.BBLACK + " ");
                 lastInt = answerInt - 1;
             } else {
                 System.out.println("int(enter) / (.(išsirinkau) / i(išeiti)) / m(pažiūrėti į meniu)");
@@ -109,18 +111,17 @@ public class PizzeriaMain {
         LocalDateTime ldt = LocalDateTime.now();
         System.out.print(
                 "\n\n"
-                + (finished ? Color.GREEN_BG : Color.YELLOW_BG)
-                + "\n\t"
-                + (finished ? "Sąskaita faktūra (" + ldt.format(DateTimeFormatter.ofPattern("YYYY.MM.dd HH:mm")) + ")" : "Jūsų pasirinkti produktai:")
-                + "\n\n" + Color.RESET
+                        + (finished ? Color.GREEN_BG : Color.YELLOW_BG)
+                        + "\n\t"
+                        + (finished ? "Sąskaita faktūra (" + ldt.format(DateTimeFormatter.ofPattern("YYYY.MM.dd HH:mm")) + ")" : "Jūsų pasirinkti produktai:")
+                        + "\n\n" + Color.RESET
         );
         price = 0;
 
         System.out.println();
 
-        ordered.forEach((integer, count) ->
+        ordered.forEach((item, count) ->
         {
-            MenuItem item = allItems.get(integer);
             price += (double) (count * item.getPrice());
             final String dots = ".".repeat(70 - item.getType().length() - (count > 1 ? count.toString().length() + 7 : 0));
             System.out.printf("\t%s%s %s %5.2f €%n", item.getType(), count > 1 ? " (" + count + "vnt.)" : "", dots, count * item.getPrice());
@@ -132,7 +133,7 @@ public class PizzeriaMain {
             int hh = cookingTime / 60; //since both are ints, you get an int
             int mm = cookingTime - hh * 60;
             System.out.print("\n\tUžsakymas bus paruoštas už ");
-            System.out.printf("%s %s", (hh > 0 ? hh+"h " : ""), (mm > 0 ? mm+"min." : ""));
+            System.out.printf("%s %s", (hh > 0 ? hh + "h " : ""), (mm > 0 ? mm + "min." : ""));
             System.out.println(" (" + ldt.plusMinutes(cookingTime).format(DateTimeFormatter.ofPattern("HH:mm")) + ")");
             System.out.println("\n\tSKANAUS :)");
         }
@@ -145,17 +146,24 @@ public class PizzeriaMain {
         System.out.print(text);
 
         boolean decision = true;
+        label:
         do {
             String answer = c.next();
-            if (answer.equals("k")) {
-                finishOrdering(true);
-                break;
-            } else if (answer.equals("i")) break;
-            else if (answer.equals("u")) {
-                System.out.println("\n\n\tRinkis iš naujo.........");
-                ordering();
-                break;
-            } else System.out.println(text);
+            switch (answer) {
+                case "k":
+                    finishOrdering(true);
+                    break label;
+                case "i":
+                    decision = false;
+                    break;
+                case "u":
+                    System.out.println("\n\n\tRinkis iš naujo.........");
+                    ordering();
+                    break label;
+                default:
+                    System.out.println(text);
+                    break;
+            }
         } while (decision);
     }
 
