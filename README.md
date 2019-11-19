@@ -30,7 +30,7 @@ Techninė dalis
 - Sauce - enumas
 
 ### Rezultato fragmentas
-![ss](https://i.ibb.co/PcvWhM2/meniu.jpg)
+[![ss](https://i.ibb.co/9bk4Thx/meniu.jpg)](https://i.ibb.co/9bk4Thx/meniu.jpg)
 
 ### Authors:
 [Artūras](https://github.com/keizah7) ![Followers](https://img.shields.io/github/followers/keizah7?style=social)
